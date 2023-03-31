@@ -92,6 +92,7 @@ public static double distance(int color1, int color2){
         int greenVal1=Color.green(color1);
         int blueVal1=Color.blue(color1);
 
+
         int redVal2=Color.red(color2);
         int greenVal2=Color.green(color2);
         int blueVal2=Color.blue(color2);

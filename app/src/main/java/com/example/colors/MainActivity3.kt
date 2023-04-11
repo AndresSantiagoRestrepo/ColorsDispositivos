@@ -79,6 +79,7 @@ fun colorSection(proposedTextColor:Int,proposedBackColor:Int
 
 @Composable
 fun SliderSection(title: String,color: Color,value:Float) {
+    //el value es un solo float, cada slider tiene una valor float diferente
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -89,28 +90,8 @@ fun SliderSection(title: String,color: Color,value:Float) {
                 thumbColor = color,
                 activeTickColor = color,
                 inactiveTickColor = Color.Gray,
-
-
             ), modifier = Modifier
                 .weight(1f))
-        // no funciona esto
-
-        var redValue = 0
-        var greenValue =0
-        var blueValue = 0
-
-        if(title=="RED"){ redValue=sliderPosition.toInt()}
-
-        else if (title=="GREEN"){greenValue=sliderPosition.toInt()}
-        else if (title=="BLUE"){blueValue=sliderPosition.toInt()}
-
-
-
-
-
-
-
-
     }
 
 }
@@ -170,11 +151,16 @@ fun buttonSection(onClick: () -> Unit
 fun MyUI() {
 
 
+
     var proposedTextColor by remember { mutableStateOf(colorGame.proposedTextColor) }
     var proposedBackColor by remember { mutableStateOf(colorGame.proposedBackColor) }
 
     var targetTextColor by remember { mutableStateOf(colorGame.targetTextColor) }
     var targetBackColor by remember { mutableStateOf(colorGame.targetBackColor) }
+
+    var redValue by remember { mutableStateOf(colorcito.red(proposedBackColor).toFloat()) }
+    var greenValue by remember {mutableStateOf(colorcito.green(proposedBackColor).toFloat())}
+    var blueValue by remember { mutableStateOf(colorcito.blue(proposedBackColor).toFloat()) }
 
 
     Column ( modifier= Modifier
@@ -191,14 +177,33 @@ fun MyUI() {
             colorSection(colorGame.proposedTextColor,colorGame.proposedBackColor,targetTextColor,targetBackColor)
         }
 
-        SliderSection(title = "RED" , color = Color.Red, value = colorcito.red(colorGame.proposedBackColor).toFloat())
-        SliderSection(title = "GREEN", color = Color.Green, value = colorcito.green(colorGame.proposedBackColor).toFloat())
-        SliderSection(title = "BLUE" , color = Color.Blue, value = colorcito.blue(colorGame.proposedBackColor).toFloat())
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(text = redValue.toString())
+            Slider(value = redValue, onValueChange = { redValue = it  }, valueRange = 0f..255f,
+                colors = SliderDefaults.colors(
+                    thumbColor = Color.Red,
+                    activeTickColor = Color.Red,
+                    inactiveTickColor = Color.Gray,
+                ), modifier = Modifier
+                    .weight(1f))
+        }
+
+
+        SliderSection(title = "GREEN", color = Color.Green, value = greenValue)
+        SliderSection(title = "BLUE" , color = Color.Blue, value = blueValue)
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ){
             Button(onClick = {
+                redValue=colorcito.red(proposedBackColor).toFloat()
+                greenValue=colorcito.green(proposedBackColor).toFloat()
+                blueValue=colorcito.blue(proposedBackColor).toFloat()
+
+
+
                 colorGame.restartGame()
                 proposedTextColor= colorGame.proposedTextColor
                 proposedBackColor= colorGame.proposedBackColors

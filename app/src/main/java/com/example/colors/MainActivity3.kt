@@ -93,6 +93,7 @@ fun SliderSection(title: String,color: Color,value:Float) {
 
             ), modifier = Modifier
                 .weight(1f))
+        // no funciona esto
 
         var redValue = 0
         var greenValue =0
